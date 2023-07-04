@@ -16,12 +16,12 @@ public class AlipayConfig {
     /**
      * 应用ID,您的APPID，收款账号既是您的APPID对应支付宝账号
      */
-    private String appId = "2021000120601125";
+    private String appId = "xxxxxxxxxxxxxxxxxxxxxxxx";
 
     /**
      * 商户私钥，您的PKCS8格式RSA2私钥
      */
-    private String privateKey = "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDb1EGVHY9wujjH1xlhpePXFqJRXR2GAmm0U454oNw6TRhWUldAExrSxQqURQX0MBEC/UVWpttME/5O+VtCmZId3N4hx1kIMuXYAmig2KkFqEOhKsT4QWRWWhqDPjytyvTWXqZIXpziQ3AyBkhlJPf2tocSfFa5h60gERIdkXpB404w7iuQltrykK+AV95ddPpEFPvUlOC8GAbXglaK9xd6zKuyp4fgH/tVsqd8VkViXEHfbzHaqYWuVd9zZ+oXyKnCg/RkR8kgKuDa66HlMnaiDEIPydXtMfXx1fzI0DR8HrMJdAQDs8qU0DQ+nK8CBQq3sPuCrTUkbfbv/t3KdmCNAgMBAAECggEAc0ecHNajojoGDMaASPT1xpXYCVMLaHtbc3VeAWRaGTjUym/j0XYzWtR598c6mBOc2DR5aDeYSQ0zD7c0ZHikZ4Sr+IrR5brLTbv1omP8Pzs+PAZxxL6GH8KgpLK+n2UPgFuiV9FF9GHpNFKXJHN+laKiss8Bq8m6wFYzac4gjuvraFnvuP0LVpz8+aTL/JkBkdvzf3tT5PRktK/kDG/Y3beftAOg6K3/93u2CGCC5qri9qJ7CZ48OCpRQjvJAE8e5HiY6aE4Z2bmZG4/oocUwSEcIMRWROkmRhe9sbKNev+ItSAslwj2vVYbf+3ksjeXiGlPnm2a9vg2ftg2pkn3AQKBgQD+g9AzBNz/2/a68nRu5uOOT3vYPX/IGKXWuDk8WE55ESTOrXYpxYHOA/oviSirnLb/HCsbuzVg9TjeuwmGFjOl26oWRvY+BO7aKAhatego44og778WVSvmSARvAxE6sxt8MJEJEfAdFZiSt3fmeG6IdC2/QNyzt+qtBQQKiKvjJwKBgQDdHKFd8l1W48S243JpBFsWx5D+rZ3FcsI0lVv8qx8LeyvvSZPkr7iSGu3/yQ8BpOMpuTbYTBPNUOaWFEdsncR0gC5EWtwEITLdncIdlbxOKOSX0KoKXtJA4/5WZv7c17Gqxnd3bzhfRHwYEVLAq7OEK6uT6phNME2Ooe6COa6fKwKBgGC/GlVKc/eOVauankfJ3JYsAJeiSQB23hNQ0/DsYGgE7EjkBxa5zS3StTd8m8kgOS+gNYLFFvVUQdnonyYpKljRt0Xgk5nfpiunLAXPQADK/aane6uxlI5kscrBD7uQedIrY/ZeqzdjDiw3MYyaGuojv4AD1+E4+CvszCx052HhAoGAK+B7kRYAObbXGWfHE1ne7YVKm48+SKk+KosdBuW6MmAN1t0l8PKB0NRxOBng1XWv8l6jqIZoQ4zzRQLfLYmdK3UoOT5CfLtNybZ9h7tn86afvhSVOZuZY3EaznB/0Lkos3fQyy2R5S3E5k3BuyQXann0AVVDRcX5Df3KQ6NIqKMCgYB3dSzhABrJGLtjTRpW6456+g2inIxHuz+O4612MWrOxLYmULhgAZHkuX820tjRniRPCNpu8BshHw0ED2iovcXK2ATR/Vjs/wInU4z5miLaPaTqC2lFVMcQP/ocG6hfcnGR6zZjQq2N+TwpHKl5N8sBps7KbI4hbs1bqf3emXOW0g==";
+    private String privateKey = "xxxxxxxxxxxxxxxxxxxxxxxx";
 
     /**
      * 支付宝公钥,

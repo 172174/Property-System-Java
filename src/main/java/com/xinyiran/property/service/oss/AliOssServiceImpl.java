@@ -17,8 +17,8 @@ public class AliOssServiceImpl implements AliOssService{
 
     @Override
     public Map getPolicy(){
-        String accessId = "LTAI5tAvo3fXzxZeGkkN1Twr";
-        String accessKey = "oMYY4YfOeQelUD0eAToZ2NkXCmjNoG";
+        String accessId = "xxxxxxx";
+        String accessKey = "xxxxxxx";
 
         // Endpoint以华东1（杭州）为例，其它Region请按实际情况填写。
         String endpoint = "oss-cn-chengdu.aliyuncs.com";
