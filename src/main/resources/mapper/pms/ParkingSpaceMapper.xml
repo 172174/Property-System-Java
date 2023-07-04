@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinyiran.property.mapper.pms.ParkingSpaceMapper">
+    <insert id="insert">
+        INSERT INTO pms_parkingspace
+            (number,type,area,state,remark,created,del_state,is_use)
+        VALUES
+            (#{number},#{type},#{area},#{state},#{remark},now(),0,1)
+    </insert>
+    <update id="update">
+        UPDATE pms_parkingspace p
+        SET
+            p.number = #{number},
+            p.type = #{type},
+            p.area = #{area},
+            p.state = #{state},
+            p.remark = #{remark}
+        WHERE
+            p.id = #{id}
+    </update>
+
+    <select id="selectList" resultType="com.xinyiran.property.entity.pms.ParkingSpace">
+        SELECT
+            *
+        FROM
+            pms_parkingspace AS p
+        WHERE
+            p.del_state = 0
+        <if test="number != null">
+            AND p.number like concat('%',#{number},'%')
+        </if>
+        <if test="type != null">
+            AND p.type = #{type}
+        </if>
+        <if test="state != null">
+            AND p.state = #{state}
+        </if>
+        <if test="isUse != null">
+            AND p.is_use = #{isUse}
+        </if>
+    </select>
+    <select id="selectDetail" resultType="com.xinyiran.property.entity.pms.ParkingSpace">
+        SELECT
+            *
+        FROM
+            pms_parkingspace p
+        WHERE p.id = #{id}
+    </select>
+</mapper>
+

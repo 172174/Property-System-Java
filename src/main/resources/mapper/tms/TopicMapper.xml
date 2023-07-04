@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinyiran.property.mapper.tms.TopicMapper">
+    <insert id="insetTopic" >
+        INSERT INTO tms_topic (title,content,user_id,views,comment_count,likes,picture,del_state,create_time) values (#{title},#{content},#{userId},0,0,0,#{picture},0,now())
+    </insert>
+    <insert id="insertLike" >
+        INSERT INTO tms_like(user_id,topic_id,del_state) values (#{userId},#{topicId},0)
+    </insert>
+    <insert id="insertComment" parameterType="Comment">
+        INSERT INTO tms_comment(user_id,topic_id,content,comment_time,del_state) values (#{userId},#{topicId},#{content},now(),0)
+    </insert>
+    <update id="addLikes">
+        update tms_topic set likes= likes + 1 where id=#{topicId}
+    </update>
+    <update id="addCommentCount">
+        update tms_topic set comment_count= comment_count + 1 where id=#{topicId}
+    </update>
+
+    <select id="findPopularTopic" resultType="com.xinyiran.property.entity.tms.Topic">
+        SELECT
+            t.*,
+            u.avatar,
+            u.username,
+            u.nick_name
+        FROM
+            tms_topic AS t
+                LEFT JOIN sys_user u ON u.id = t.user_id
+        WHERE
+            t.del_state = 0
+          AND t.comment_count > 10
+        ORDER BY
+            t.comment_count DESC
+    </select>
+    <select id="findRecentTopic" resultType="com.xinyiran.property.entity.tms.Topic">
+        SELECT
+            t.*,
+            u.avatar,
+            u.username,
+            u.nick_name
+        FROM
+            tms_topic AS t
+                LEFT JOIN sys_user u ON u.id = t.user_id
+        WHERE
+            t.del_state = 0
+        ORDER BY
+            t.create_time DESC
+    </select>
+
+    <select id="findDetails" resultType="com.xinyiran.property.entity.tms.Topic">
+        SELECT
+            t.id,
+            t.title,
+            t.content,
+            t.picture,
+            t.create_time,
+            t.comment_count,
+            t.user_id,
+            u.avatar,
+            u.username,
+            u.nick_name
+        FROM
+            tms_topic t
+                LEFT JOIN sys_user u ON t.user_id = u.id
+        WHERE
+            t.id = #{topicId}
+
+    </select>
+    <select id="findComment" resultType="com.xinyiran.property.entity.tms.Comment">
+        SELECT
+            c.id,
+            c.content,
+            c.user_id,
+            c.topic_id,
+            c.comment_time,
+            c.picture,
+            u.avatar,
+            u.username,
+            u.nick_name
+        FROM
+            tms_comment c
+                LEFT JOIN sys_user u ON c.user_id = u.id
+        WHERE
+            c.topic_id = #{topicId}
+          AND c.del_state = 0 ORDER BY c.comment_time DESC
+    </select>
+    <select id="findListByPage" resultType="com.xinyiran.property.entity.tms.Topic">
+        SELECT
+            t.*,
+            u.avatar,
+            u.nick_name,
+            u.username
+
+        FROM
+            tms_topic t
+                LEFT JOIN sys_user u ON t.user_id = u.id
+        WHERE
+            t.del_state = 0
+        ORDER BY
+            t.create_time DESC
+    </select>
+</mapper>
+

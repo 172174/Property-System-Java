@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinyiran.property.mapper.ems.ParkingFeeMapper">
+
+    <insert id="insertParkingFee" parameterType="ParkingFee" keyProperty="id">
+        INSERT INTO ems_parkingorder(id,number_plate,name,type,unit,unit_price,state,creation_time,del_state)
+        values (#{id},#{numberPlate},#{name},#{type},#{unit},#{unitPrice},#{state},#{creationTime},#{delState})
+    </insert>
+    <update id="updateParkingFee">
+        UPDATE
+            ems_parkingorder p
+        SET
+            p.quantity  = #{quantity},
+            p.total_price  = #{totalPrice},
+            p.state  = #{state},
+            p.end_time  = #{endTime}
+        WHERE
+            p.id = #{id}
+
+    </update>
+    <select id="selectByNumberPlate" resultType="com.xinyiran.property.entity.ems.ParkingFee">
+        SELECT
+            *
+        FROM
+            ems_parkingorder p
+        WHERE
+            p.number_plate = #{numberPlate}
+            AND
+            p.state = 0
+    </select>
+    <select id="selectPage" resultType="com.xinyiran.property.entity.ems.ParkingFee">
+        SELECT
+            *
+        FROM
+            ems_parkingorder p
+        WHERE
+            p.del_state = 0
+        <if test="id != null">
+            AND p.id = #{id}
+        </if>
+        <if test="numberPlate != null">
+            AND p.number_plate like concat('%',#{numberPlate},'%')
+        </if>
+        <if test="name != null">
+            AND p.name like concat('%',#{name},'%')
+        </if>
+        <if test="type != null">
+            AND p.type = #{type}
+        </if>
+        <if test="state != null">
+            AND p.state = #{state}
+        </if>
+
+    </select>
+</mapper>
+

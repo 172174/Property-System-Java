@@ -1,0 +1,47 @@
+server:
+  port: 8099
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/property?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+    username: root
+    password: 123456
+
+  main:
+    allow-bean-definition-overriding: true
+
+  security:
+    user:
+      name: user
+      password: 111111
+
+
+#mybatis:
+#  mapper-locations: classpath*:/mapper/*/**Mapper.xml
+#  type-aliases-package: com.xinyiran.property.*.entity
+#  configuration:
+#    map-underscore-to-camel-case: true
+
+mybatis:
+  type-aliases-package: com.xinyiran.property.entity.*
+  mapper-locations: classpath:/mapper/*/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+#分页插件
+pagehelper:
+  helper-dialect: mysql
+  params: count=countSql
+  reasonable: true
+  support-methods-arguments: true
+
+
+
+xinyiran:
+  jwt:
+    header: Authorization
+    expire: 604800 #7?
+    secret: wotmd8a4dw648w8d45a5w8w4s56a58wm
+
+

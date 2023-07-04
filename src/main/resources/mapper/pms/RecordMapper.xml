@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinyiran.property.mapper.pms.RecordMapper">
+
+    <!--查找车辆进出记录列表，分页    -->
+    <select id="selectPage" parameterType="Record" resultType="com.xinyiran.property.entity.pms.Record">
+        SELECT
+            *
+        FROM
+            pms_record r
+        WHERE
+            r.del_state = 0
+        <if test="numberPlate != null ">
+            AND r.number_plate like concat('%', #{numberPlate}, '%')
+        </if>
+    </select>
+</mapper>
+

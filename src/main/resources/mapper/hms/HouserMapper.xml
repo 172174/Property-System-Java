@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinyiran.property.mapper.hms.HouseMapper">
+
+    <resultMap id="HouseResult" type="House">
+        <id property="id" column="id"></id>
+        <result property="houseNum" column="house_num"></result>
+        <result property="floor" column="floor"></result>
+        <result property="type" column="type"></result>
+        <result property="unitType" column="unit_type"></result>
+        <result property="area" column="area"></result>
+        <result property="buildingName" column="building_name"></result>
+        <result property="buildingId" column="building_id"></result>
+        <result property="unit" column="unit"></result>
+        <result property="sale" column="sale"></result>
+        <result property="checkInTime" column="check_in_time"></result>
+        <result property="remark" column="remark"></result>
+        <collection property="owners" javaType="java.util.ArrayList" ofType="Owner">
+            <id property="id" column="owner_id"></id>
+            <result property="name" column="owner_name"></result>
+            <result property="phoneNum" column="phone_num"></result>
+            <result property="idCard" column="id_card"></result>
+            <result property="checkInTime" column="owner_check_in_time"></result>
+            <result property="avatar" column="avatar"></result>
+            <result property="homeowner" column="homeowner"></result>
+        </collection>
+    </resultMap>
+
+    <resultMap id="OwnerResult" type="Owner">
+        <id property="id" column="owner_id"></id>
+        <result property="name" column="owner_name"></result>
+        <result property="phoneNum" column="phone_num"></result>
+        <result property="idCard" column="id_card"></result>
+        <result property="checkInTime" column="owner_check_in_time"></result>
+        <result property="avatar" column="avatar"></result>
+        <result property="homeowner" column="homeowner"></result>
+    </resultMap>
+    <insert id="binding">
+        INSERT INTO hms_house_owner
+            (house_id,owner_id,state)
+        values
+            (#{houseId},#{ownerId},0)
+    </insert>
+    <insert id="save">
+        INSERT INTO hms_house (building_id,building_name,unit,house_num,floor,type,unit_type,area,state,check_in_time,remark,sale)
+                    values (#{buildingId},#{buildingName},#{unit},#{houseNum},#{floor},#{type},#{unitType},#{area},0,#{checkInTime},#{remark},0)
+    </insert>
+    <update id="update">
+        update hms_house set building_id = #{buildingId},building_name = #{buildingName},unit=#{unit},house_num=#{houseNum},floor=#{floor},type=#{type},unit_type=#{unitType},area=#{area},check_in_time=#{checkInTime},remark=#{remark} where id = #{id}
+    </update>
+    <update id="updateBinding">
+        UPDATE hms_house_owner ho
+        SET ho.house_id = #{houseId}
+        WHERE
+            ho.owner_id = #{ownerId}
+    </update>
+    <update id="updateCheckIntime">
+        update hms_house set check_in_time = now() where id = #{houseId}
+    </update>
+    <update id="delete">
+        update hms_house set state = 1 where id =#{houseId}
+    </update>
+
+    <select id="selectHousesList" resultType="com.xinyiran.property.entity.hms.House">
+        SELECT
+            *
+        FROM
+            hms_house h
+        WHERE
+            h.state = 0
+    </select>
+    <select id="selectHouseDetails" resultMap="HouseResult">
+        SELECT
+            h.id,
+            h.house_num,
+            h.floor,
+            h.type,
+            h.unit,
+            h.building_id,
+            h.building_name,
+            h.unit_type,
+            h.area,
+            h.sale,
+            h.check_in_time,
+            h.remark,
+            o.id owner_id,
+            o.`name` owner_name,
+            o.id_card,
+            o.phone_num,
+            o.check_in_time owner_check_in_time,
+            o.avatar,
+            o.homeowner
+        FROM
+            hms_house h
+                LEFT JOIN hms_house_owner ho ON ho.house_id = h.id
+                LEFT JOIN hms_owner o ON o.id = ho.owner_id
+        WHERE
+            h.id = #{houseId}
+          AND h.state = 0
+    </select>
+    <select id="selectListOfBuilding" resultType="com.xinyiran.property.entity.dto.HouseDto">
+        SELECT
+            h.id,
+            h.unit,
+            h.building_id,
+            h.house_num as name
+        FROM
+            hms_house h
+        WHERE
+            h.state = 0
+    </select>
+    <select id="selectList" resultType="com.xinyiran.property.entity.hms.House">
+        SELECT
+            *
+        FROM
+            hms_house h
+        WHERE
+            h.state = 0
+        <if test="buildingId != null">
+            AND h.building_id = #{buildingId}
+        </if>
+        <if test="houseNum != null">
+            AND h.house_num like concat('%', #{houseNum}, '%')
+        </if>
+        <if test="sale != null">
+            AND h.sale = #{sale}
+        </if>
+    </select>
+    <select id="findWaters" resultType="com.xinyiran.property.entity.hms.Water">
+        SELECT
+            *
+        FROM
+            hms_water AS w
+        WHERE w.house_id = #{houseId}
+    </select>
+    <select id="findGas" resultType="com.xinyiran.property.entity.hms.Gas">
+        SELECT
+            *
+        FROM
+            hms_gas AS g
+        WHERE g.house_id = #{houseId}
+    </select>
+    <select id="findElectricity" resultType="com.xinyiran.property.entity.hms.Electricity">
+        SELECT
+            *
+        FROM
+            hms_electricity AS e
+        WHERE e.house_id = #{houseId}
+    </select>
+</mapper>
+

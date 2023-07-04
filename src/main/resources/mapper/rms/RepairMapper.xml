@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinyiran.property.mapper.rms.RepairMapper">
+    <insert id="insert">
+        INSERT INTO rms_repair(owner_name,phone_num,house_id,house_num,type,content,picture,state,create_time,del_state) values (#{ownerName},#{phoneNum},#{houseId},#{houseNum},#{type},#{content},#{picture},0,now(),0)
+    </insert>
+    <update id="update">
+        update rms_repair AS r set maintenance_staff = #{maintenanceStaff} ,update_time = #{updateTime},state = 1 where id = #{id}
+    </update>
+
+    <update id="finish">
+        update rms_repair AS r set state = 2 where id = #{id}
+    </update>
+
+    <select id="selectPage" resultType="com.xinyiran.property.entity.rms.Repair">
+        SELECT
+            *
+        FROM
+            rms_repair AS r
+        WHERE
+            r.del_state = 0
+    </select>
+    <select id="selectDetail" resultType="com.xinyiran.property.entity.rms.Repair">
+        SELECT
+            *
+        FROM
+            rms_repair AS r
+        WHERE
+            r.id = #{repairId}
+    </select>
+    <select id="findByHouseId" resultType="com.xinyiran.property.entity.rms.Repair">
+        SELECT
+            *
+        FROM
+            rms_repair AS r
+        WHERE
+            r.house_id = #{houseId} AND r.state = #{state}
+    </select>
+</mapper>
+

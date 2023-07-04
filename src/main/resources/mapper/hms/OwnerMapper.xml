@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinyiran.property.mapper.hms.OwnerMapper">
+    <resultMap id="OwnerDetailsResult" type="com.xinyiran.property.entity.hms.Owner">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="gender" column="gender"></result>
+        <result property="idCard" column="id_card"></result>
+        <result property="phoneNum" column="phone_num"></result>
+        <result property="houseNum" column="house_num"></result>
+        <result property="avatar" column="avatar"></result>
+        <result property="checkInTime" column="check_in_time"></result>
+        <result property="movingOutTime" column="moving_out_time"></result>
+        <result property="homeowner" column="homeowner"></result>
+        <result property="houseId" column="house_id"></result>
+        <result property="buildingId" column="building_id"></result>
+    </resultMap>
+    <insert id="insertOwner" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO hms_owner(name,gender,id_card,phone_num,house_num,avatar,check_in_time,homeowner,moving_out_time,state)
+        values (#{name},#{gender},#{idCard},#{phoneNum},#{houseNum},#{avatar},#{checkInTime},#{homeowner},#{movingOutTime},0)
+    </insert>
+    <insert id="bind">
+        INSERT INTO ums_user_owner(user_id,owner_id,state) values (#{userId},#{ownerId},0)
+    </insert>
+    <update id="updateOwner">
+        UPDATE hms_owner o
+        SET o.`name` = #{name},
+            o.gender = #{gender},
+            o.id_card = #{idCard},
+            o.phone_num = #{phoneNum},
+            o.house_num = #{houseNum},
+            o.avatar = #{avatar},
+            o.check_in_time = #{checkInTime},
+            o.moving_out_time = #{movingOutTime},
+            o.homeowner =#{homeowner}
+        WHERE
+            o.id = #{id}
+    </update>
+    <update id="untie">
+        update ums_user_owner set state = 1 where user_id = #{userId} and owner_id = #{ownerId}
+    </update>
+
+    <select id="selectOwnerList" resultType="com.xinyiran.property.entity.hms.Owner">
+        SELECT
+            *
+        FROM
+            hms_owner o
+        WHERE
+            o.state = 0
+    </select>
+    <select id="selectOwnerDetails" resultMap="OwnerDetailsResult">
+        SELECT
+            o.id,
+            o.`name`,
+            o.gender,
+            o.id_card,
+            o.phone_num,
+            o.house_num,
+            o.avatar,
+            o.check_in_time,
+            o.homeowner,
+            o.moving_out_time,
+            ho.house_id AS house_id,
+            h.building_id As building_id
+        FROM
+            hms_owner o
+                LEFT JOIN hms_house_owner ho ON ho.owner_id = o.id
+                LEFT JOIN hms_house h ON h.id = ho.house_id
+        WHERE
+            o.id = #{ownerId}
+          AND o.state = 0
+    </select>
+    <select id="selectList" resultType="com.xinyiran.property.entity.hms.Owner">
+        SELECT
+        *
+        FROM
+        hms_owner o
+        WHERE
+        o.state = 0
+        <if test="name != null">
+            AND o.name like concat('%', #{name}, '%')
+        </if>
+        <if test="houseNum != null">
+            AND o.house_num like concat('%', #{houseNum}, '%')
+        </if>
+        <if test="phoneNum != null">
+            AND o.phone_num like concat('%', #{phoneNum}, '%')
+        </if>
+    </select>
+    <select id="findMember" resultType="com.xinyiran.property.entity.hms.Owner">
+        SELECT
+            o.*
+        FROM
+            hms_owner o
+                LEFT JOIN hms_house_owner ho ON ho.owner_id = o.id
+        WHERE
+            ho.house_id = #{houseId}
+          AND ho.state = 0
+    </select>
+    <select id="selectByOwnerName" resultType="com.xinyiran.property.entity.hms.Owner">
+        select * from hms_owner o where o.name = #{ownerName} and o.state = 0
+    </select>
+</mapper>
+

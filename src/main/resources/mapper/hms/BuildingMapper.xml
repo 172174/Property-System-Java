@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinyiran.property.mapper.hms.BuildingMapper">
+
+    <select id="selectList" resultType="com.xinyiran.property.entity.dto.BuildingDto">
+        SELECT
+            b.id,
+            b.`name`,
+            b.sort,
+            b.units
+        FROM
+            hms_building b
+        WHERE
+            b.state = 0
+    </select>
+    <select id="findNameById" resultType="java.lang.String">
+        select b.`name` FROM
+            hms_building b
+        where b.id = #{buildingId}
+    </select>
+</mapper>
+

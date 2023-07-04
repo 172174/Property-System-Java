@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinyiran.property.mapper.ems.SettingMapper">
+
+    <select id="selectList" parameterType="Setting" resultType="com.xinyiran.property.entity.ems.Setting">
+        SELECT
+            *
+        FROM
+            ems_settings s
+        WHERE
+            s.del_state = 0
+        <if test="type != null and type != ''">
+            AND s.type = #{type}
+        </if>
+    </select>
+    <select id="selectById" resultType="com.xinyiran.property.entity.ems.Setting">
+        SELECT
+            *
+        FROM
+            ems_settings s
+        WHERE s.id = #{id}
+    </select>
+    <select id="selectDetail" resultType="com.xinyiran.property.entity.ems.Setting">
+        SELECT
+            *
+        FROM
+            ems_settings s
+        WHERE s.id = #{id}
+    </select>
+</mapper>
+

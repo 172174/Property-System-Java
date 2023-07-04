@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinyiran.property.mapper.ems.ExpenseMapper">
+    <insert id="insertExpense" parameterType="Expense" keyProperty="id">
+        INSERT INTO ems_order(id,house_id,house_num,owner_id,owner_name,type_name,quantity,unit,unit_price,total_price,state,creation_time,del_state)
+            values (#{id},#{houseId},#{houseNum},#{ownerId},#{ownerName},#{typeName},#{quantity},#{unit},#{unitPrice},#{totalPrice},#{state},now(),#{delState})
+    </insert>
+    <update id="pay">
+        update ems_order set payment_time = now(),state = 1 where id = #{id}
+    </update>
+
+    <!--查询上月用水量-->
+    <select id="selectWater" resultType="java.lang.Float">
+        SELECT
+            w.last_month_water
+        FROM
+            hms_water w
+    </select>
+
+    <!--查询上月用气量-->
+    <select id="selectGas" resultType="java.lang.Float">
+        SELECT
+            w.last_month_gas
+        FROM
+            hms_gas w
+    </select>
+
+    <!--查询上月用电量-->
+    <select id="selectElectricity" resultType="java.lang.Float">
+        SELECT
+            w.last_month_electricity
+        FROM
+            hms_electricity w
+    </select>
+    <select id="selectListPage" resultType="com.xinyiran.property.entity.ems.Expense">
+        SELECT
+            *
+        FROM
+            ems_order o
+        WHERE
+            o.del_state = 0
+        <if test="id != null">
+            AND o.id = #{id}
+        </if>
+        <if test="houseNum != null">
+            AND o.house_num like concat('%',#{houseNum},'%')
+        </if>
+        <if test="ownerName != null">
+            AND o.owner_name like concat('%',#{ownerName},'%')
+        </if>
+        <if test="state != null">
+            AND o.state = #{state}
+        </if>
+        <if test="typeName != null">
+            AND o.type_name like concat('%',#{typeName},'%')
+        </if>
+    </select>
+
+
+    <!--生成订单时根据房子id查询业主信息    -->
+    <resultMap id="OwnerForHouseIdResult" type="Owner">
+        <id property="id" column="owner_id"></id>
+        <result property="name" column="owner_name"></result>
+        <result property="houseNum" column="house_num"></result>
+    </resultMap>
+    <select id="selectOwnerByHouseId" resultMap="OwnerForHouseIdResult">
+        SELECT
+            o.id as owner_id,
+            o.`name` as owner_name ,
+            o.house_num
+        FROM
+            hms_house_owner ho
+                LEFT JOIN hms_owner o ON ho.owner_id = o.id
+        WHERE
+            ho.house_id = #{houseId}
+          AND ho.state = 0
+          AND o.homeowner = 0
+    </select>
+    <select id="selectDetail" resultType="com.xinyiran.property.entity.ems.Expense">
+        SELECT
+            *
+        FROM
+            ems_order o
+        WHERE
+            o.id = #{expensId}
+    </select>
+    <select id="findByHouseId" resultType="com.xinyiran.property.entity.ems.Expense">
+        SELECT
+            *
+        FROM
+            ems_order o
+        WHERE
+            o.house_id = #{houseId}
+          AND o.del_state = 0
+        ORDER BY
+            o.creation_time DESC
+    </select>
+</mapper>
+

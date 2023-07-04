@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinyiran.property.mapper.pms.WhiteListMapper">
+
+    <!--查找车辆白名单列表，分页    -->
+    <select id="selectPage" parameterType="WhiteList" resultType="com.xinyiran.property.entity.pms.WhiteList">
+        SELECT
+            *
+        FROM
+            pms_whitelist w
+        WHERE
+            w.del_state = 0
+        <if test="numberPlate != null">
+            AND w.number_plate like concat('%',#{numberPlate},'%')
+        </if>
+        <if test="ownerName != null">
+            AND w.owner_name like concat('%',#{ownerName},'%')
+        </if>
+        <if test="parkingSpaceNumber != null">
+            AND w.parking_space_number like concat('%',#{parkingSpaceNumber},'%')
+        </if>
+        <if test="type != null">
+            AND w.type = #{type}
+        </if>
+        <if test="state != null">
+            AND w.state = #{state}
+        </if>
+    </select>
+    <select id="selectDetail" resultType="com.xinyiran.property.entity.pms.WhiteList">
+        SELECT
+            *
+        FROM
+            pms_whitelist w
+        WHERE
+            w.id = #{whiteListId}
+    </select>
+</mapper>
+

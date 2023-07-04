@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinyiran.property.mapper.hms.CommunityMapper">
+
+    <select id="findInfoByhouseId" resultType="com.xinyiran.property.entity.hms.Community">
+        SELECT
+            c.number,
+            c.`name`,
+            c.location
+        FROM
+            hms_community c
+                LEFT JOIN hms_building b ON b.community_id = c.id
+                LEFT JOIN hms_house h ON h.building_id = b.id
+        WHERE
+            h.id = #{houseId}
+    </select>
+    <select id="findInfo" resultType="com.xinyiran.property.entity.hms.Community">
+        SELECT
+            c.buildings,
+            c.houses,
+            c.parking_space_count,
+        FROM
+            hms_community c
+    </select>
+    <select id="findById" resultType="com.xinyiran.property.entity.hms.Community">
+        select * from hms_community where id = #{communityId}
+    </select>
+</mapper>
+
